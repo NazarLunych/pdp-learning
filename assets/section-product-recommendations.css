@@ -1,0 +1,30 @@
+.recommendations__card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  border: 1px solid #f7f5f7;
+  text-decoration: none;
+  color: currentColor;
+}
+
+.recommendations__card-img {
+  border-radius: 12px 12px 0px 0px;
+  background: #f7f5f7;
+}
+
+.recommendations__card-content {
+  padding: 13px;
+  display: flex;
+  flex-direction: column;
+}
+
+.recommendations__card-name {
+  color: var(--third-gray-color);
+}
+
+.recommendations__card-price {
+  color: var(--dark-midnight-blue-color);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 28px;
+}
