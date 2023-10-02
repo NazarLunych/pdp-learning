@@ -1,0 +1,17 @@
+.breadcrumb {
+  width: fit-content;
+  padding: 2px 12px;
+  border-radius: 8px;
+  background: #edf0f8;
+}
+
+.breadcrumb * {
+  color: #a3a9c2;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.breadcrumb span:last-child {
+  color: var(--midnight-blue-color);
+  font-weight: 600;
+}

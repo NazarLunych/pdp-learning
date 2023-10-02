@@ -3,6 +3,13 @@
   --alpha-button-border: 1;
   --alpha-link: 0.85;
   --alpha-badge-border: 0.1;
+  --midnight-blue-color: #3a4980;
+  --dark-midnight-blue-color: #344054;
+  --default-gray-color: #f3f3f3;
+  --secondary-gray-color: #b9bbbf;
+  --third-gray-color: #667085;
+  --border-radius: 29.5px;
+  --tabs-border-width: 4px;
 }
 
 .product-card-wrapper .card,
@@ -73,6 +80,12 @@
 
 /* base */
 
+button,
+input,
+label {
+  cursor: pointer !important;
+}
+
 .no-js:not(html) {
   display: none !important;
 }
@@ -94,7 +107,7 @@ html.no-js .no-js-hidden {
 }
 
 .page-width {
-  max-width: var(--page-width);
+  max-width: 1380px;
   margin: 0 auto;
   padding: 0 1.5rem;
 }
@@ -2315,13 +2328,25 @@ product-info .loading-overlay:not(.hidden) ~ *,
 }
 
 @keyframes translateAnnouncementSlideIn {
-  0% {opacity: 0; transform: translateX(var(--announcement-translate-from))}
-  100% {opacity: 1; transform: translateX(0)}
+  0% {
+    opacity: 0;
+    transform: translateX(var(--announcement-translate-from));
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes translateAnnouncementSlideOut {
-  0% {opacity: 1; transform: translateX(0)}
-  100% {opacity: 0; transform: translateX(var(--announcement-translate-to))}
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(var(--announcement-translate-to));
+  }
 }
 
 /* section-header */

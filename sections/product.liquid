@@ -1,0 +1,149 @@
+<script src="{{'product-common.js' | asset_url}}" defer="defer"></script>
+<script type="application/json" id="config">
+  {
+    "product": {{ product | json }},
+    "sectionId": {{ section.id | json }},
+    "inventoryQuantity": {{ product.selected_or_first_available_variant.inventory_quantity }}
+
+  }
+</script>
+{{ 'section-product.css' | asset_url | stylesheet_tag }}
+
+{% assign metafieldCntIndex = 1 %}
+
+{% comment %} To change font-family, need to use the Shopify settings  {% endcomment %}
+<section class="product page-width">
+  <div class="product__container">
+    <div class="product__content-wrapper">
+      <div class="product__gallery">
+        <div class="product__poster js-product-poster">
+          <img
+            src="{{product.featured_image | image_url}}"
+            alt="Product image"
+            width="587"
+            height="691"
+            class="product__gallery-img"
+          >
+        </div>
+
+        {% render 'images-swiper', content: product %}
+      </div>
+
+      <div class="product__info-wrapper">
+        {% render 'breadcrumbs' %}
+
+        <div class="product__info-block">
+          <h1 class="product__title">{{ product.title }}</h1>
+          <span class="product__vendor">{{ product.vendor }}</span>
+        </div>
+
+        <div class="product__info-block product__price-wrapper js-product-price">
+          <span class="product__price">{{ product.selected_or_first_available_variant.price | money }}</span>
+          {% assign selectedOrFirstAvailable = product.selected_or_first_available_variant %}
+
+          {% if selectedOrFirstAvailable.price < selectedOrFirstAvailable.compare_at_price %}
+            <span class="product__compare-at-price">
+              {{- product.selected_or_first_available_variant.compare_at_price | money -}}
+            </span>
+          {% endif %}
+
+          {% if product.selected_or_first_available_variant.available == false %}
+            <div class="js-out-of-stock product__out-of-stock">
+              <span>Out of stock</span>
+            </div>
+          {% endif %}
+        </div>
+
+        {% for options_with_values in product.options_with_values %}
+          {% if options_with_values.values.size > 1 %}
+            <div class="product__info-block">
+              <span class="product__info-block-title">Choose a {{ options_with_values.name }}</span>
+              <div class="product__options js-options">
+                {% for value in options_with_values.values %}
+                  {% if options_with_values.name == 'Color' %}
+                    <input
+                      type="radio"
+                      id="{{value}}"
+                      name="Color"
+                      value="{{value}}"
+                      class="product__color-picker"
+                      style="background-color: {{value}}; outline-color: {{value}}"
+                      {% if product.selected_or_first_available_variant.options contains value %}
+                        checked
+                      {% endif %}
+                    >
+                  {% else %}
+                    <div class="product__option">
+                      <input
+                        type="radio"
+                        id="{{value}}"
+                        name="{{options_with_values.name}}"
+                        value="{{value}}"
+                        {% if product.selected_or_first_available_variant.options contains value %}
+                          checked
+                        {% endif %}
+                      >
+                      <label for="{{value}}">{{ value }}</label>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+
+        <div class="js-submit-container">
+          <div class="product__add-to-cart-wrapper js-add-to-cart-wrapper">
+            <div class="product__quantity-selector js-product-quantity">
+              <button id="decrease">-</button>
+              <span class="js-quantity">1</span>
+              <button id="increase">+</button>
+            </div>
+
+            <button
+              class="product__add-to-cart-btn js-add-to-cart"
+              type="submit"
+              {% if product.selected_or_first_available_variant.available == false %}
+                disabled
+              {% endif %}
+            >
+              {% if product.selected_or_first_available_variant.available %}
+                {{ 'shopping-bag-icon.svg' | asset_url | img_tag }}
+                Add to cart
+              {%- else -%}
+                Sold out
+              {% endif %}
+            </button>
+          </div>
+
+          <div class="js-error-message product__error-message"></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="product__tabs js-tabs">
+        <div class="product__btns-wrapper">
+          <button class="js-tab-btn product__tab-btn product__tab-btn_active" id="description">Description</button>
+          <button class="js-tab-btn product__tab-btn" id="reviews">Reviews</button>
+        </div>
+      </div>
+
+      <div id="description" class="js-tab-description product__tab-description product__tab-description_active">
+        <h3 class="product__description-title">Product Description</h3>
+        {% if product.metafields.custom.size > 0 %}
+          {% for product_metafield in product.metafields.custom %}
+            <p class="product__description">{{ product_metafield[metafieldCntIndex] }}</p>
+          {% endfor %}
+        {% else %}
+          <p class="product__description">No description</p>
+        {% endif %}
+      </div>
+
+      <div id="reviews" class="js-tab-description product__tab-description">
+        <h3 class="product__description-title">Reviews</h3>
+        <p class="product__description">Lorem ipsum dolor sit amet, consectetur</p>
+      </div>
+    </div>
+  </div>
+</section>
