@@ -10,6 +10,9 @@
   --third-gray-color: #667085;
   --border-radius: 29.5px;
   --tabs-border-width: 4px;
+  --transition-duration: 0.4s;
+  --transition-duration-short: 0.1s;
+  --border-radius: 14px;
 }
 
 .product-card-wrapper .card,

@@ -1,0 +1,32 @@
+:root {
+  --loader-border: 4px;
+}
+
+.collection-section__loader-wrapper {
+  width: 100%;
+  justify-content: center;
+  display: none;
+}
+
+.collection-section__loader-wrapper > .collection-section__loader {
+  border: var(--loader-border) solid #f3f3f3;
+  border-top: var(--loader-border) solid var(--midnight-blue-color);
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+  display: block;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.collection-section__loader-active {
+  display: flex;
+}

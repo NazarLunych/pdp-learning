@@ -1,32 +1,29 @@
 <script src="{{'product-recommendations.js' | asset_url}}" defer="defer"></script>
+<script src="{{'recommendationsSwiper.js' | asset_url}}" defer="defer"></script>
 {{ 'section-product-recommendations.css' | asset_url | stylesheet_tag }}
 
-{% if product.metafields.custom.size > 0
-  or product.metafields['shopify--discovery--product_recommendation'].related_products.size > 0
-%}
-  <section class="page-width product-recommendations">
-    <h2>Similar Items You Might Also Like</h2>
+<section class="page-width product-recommendations js-product-recommendations-section {% if product.metafields['shopify--discovery--product_recommendation'].related_products.size == 0 %}hidden{%endif%}">
+  <h2>Similar Items You Might Also Like</h2>
 
-    <div class="swiper js-recommendations-swiper">
-      <div class="swiper-wrapper js-products-recommendations">
-        {% for related_product in product.metafields['shopify--discovery--product_recommendation'].related_products.value %}
-          <a href="${product.url}" class="swiper-slide recommendations__card">
-            <img
-              src="{{related_product.featured_image | image_url}}"
-              class="recommendations__card-img"
-              width="200"
-              height="197"
-            >
-            <div class="recommendations__card-content">
-              <span class="recommendations__card-name">{{ related_product.title }}</span>
-              <span class="recommendations__card-price">{{ related_product.price | money }}</span>
-            </div>
-          </a>
-        {% endfor %}
-      </div>
+  <div class="swiper js-recommendations-swiper">
+    <div class="swiper-wrapper js-products-recommendations">
+      {% for related_product in product.metafields['shopify--discovery--product_recommendation'].related_products.value %}
+        <a href="${product.url}" class="swiper-slide recommendations__card">
+          <img
+            src="{{related_product.featured_image | image_url}}"
+            class="recommendations__card-img"
+            width="200"
+            height="197"
+          >
+          <div class="recommendations__card-content">
+            <span class="recommendations__card-name">{{ related_product.title }}</span>
+            <span class="recommendations__card-price">{{ related_product.price | money }}</span>
+          </div>
+        </a>
+      {% endfor %}
     </div>
-  </section>
-{% endif %}
+  </div>
+</section>
 
 {% schema %}
 { "name": "Related products", "presets": [{ "name": "Related products" }] }

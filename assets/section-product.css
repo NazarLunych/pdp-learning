@@ -69,22 +69,6 @@
   text-decoration-line: line-through;
 }
 
-.product__gallery-img {
-  border-radius: 14px;
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
-  aspect-ratio: 1;
-  cursor: pointer;
-}
-
-.product__gallery-img_active {
-  border: 3px solid var(--midnight-blue-color);
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-}
-
 .product__options {
   display: flex;
   gap: 11px;
@@ -93,11 +77,26 @@
   white-space: nowrap;
 }
 
+.product__options .product__color-picker:hover {
+  scale: 0.9;
+}
+
+.product__options .product__option:hover {
+  background-color: rgba(58, 73, 128, 0.2);
+}
+
+.product__options .product__option:hover,
+.product__option:hover,
+.product__add-to-cart-btn:hover {
+  transition: var(--transition-duration);
+}
+
 .product__options .product__color-picker,
 .product__option input {
   appearance: none;
   -webkit-appearance: none;
   border-radius: 100%;
+  transition: var(--transition-duration);
 }
 
 .product__options .product__color-picker::after,
@@ -123,7 +122,7 @@
   background-color: var(--midnight-blue-color);
   outline-color: var(--midnight-blue-color);
   outline-offset: 2px;
-  transition: 0.1s;
+  transition: var(--transition-duration-short);
 }
 
 .product__option input:checked + label {
@@ -134,7 +133,7 @@
   background-color: var(--midnight-blue-color);
   outline-color: var(--midnight-blue-color);
   outline-offset: 2px;
-  transition: 0.1s;
+  transition: var(--transition-duration-short);
 }
 
 .product__options .product__color-picker::after {
@@ -144,13 +143,16 @@
 .product__options .product__color-picker:checked {
   outline: 3px solid;
   outline-offset: 4px;
-  transition: 0.1s;
+  transition: var(--transition-duration-short);
 }
 
 .product__add-to-cart-wrapper {
   display: flex;
   justify-content: space-between;
   gap: 19px;
+}
+
+.product__submit-area-wrapper {
   padding: 30px 85px 0 0;
 }
 
@@ -169,6 +171,13 @@
 .product__quantity-selector > button {
   border: none;
   background-color: transparent;
+  transition: var(--transition-duration);
+}
+
+.product__quantity-selector > button:hover {
+  background-color: rgba(58, 73, 128, 0.2);
+  border-radius: 10px;
+  transition: var(--transition-duration);
 }
 
 .product__add-to-cart-btn {
@@ -183,6 +192,10 @@
   border: none;
   width: 100%;
   justify-content: center;
+}
+
+.product__add-to-cart-btn:hover {
+  outline: 6px solid rgba(58, 73, 128, 0.5);
 }
 
 .product__add-to-cart-btn:disabled {
@@ -219,6 +232,10 @@
   background-color: transparent;
 }
 
+.product__tab-btn:hover {
+  color: var(--midnight-blue-color);
+}
+
 .product__tab-btn_active {
   color: var(--midnight-blue-color);
   font-weight: 600;
@@ -229,11 +246,8 @@
   display: none;
 }
 
-.product__tab-description_active {
+.product__tab-description.product__tab-description--active {
   display: block;
-  /* FIX: Питання до TL. Чи є сенс задати вищу приорітетність класу через !important, 
-  щоб уникнути перекриття стилів, якщо product__tab-description 
-  буде нижче ніж product__tab-description_active */
 }
 
 .product__out-of-stock {
@@ -266,8 +280,11 @@
     width: 100%;
   }
 
-  .product__add-to-cart-wrapper {
+  .product__submit-area-wrapper {
     padding-right: 0;
+  }
+
+  .product__add-to-cart-wrapper {
     flex-direction: column;
   }
 }

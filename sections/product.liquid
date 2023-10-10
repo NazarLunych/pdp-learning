@@ -4,28 +4,20 @@
     "product": {{ product | json }},
     "sectionId": {{ section.id | json }},
     "inventoryQuantity": {{ product.selected_or_first_available_variant.inventory_quantity }}
-
   }
 </script>
 {{ 'section-product.css' | asset_url | stylesheet_tag }}
 
 {% assign metafieldCntIndex = 1 %}
+{% assign selectedOrFirstAvailable = product.selected_or_first_available_variant %}
+{% assign price = selectedOrFirstAvailable.price %}
+{% assign compareAtPrice = selectedOrFirstAvailable.compare_at_price %}
 
 {% comment %} To change font-family, need to use the Shopify settings  {% endcomment %}
 <section class="product page-width">
   <div class="product__container">
     <div class="product__content-wrapper">
       <div class="product__gallery">
-        <div class="product__poster js-product-poster">
-          <img
-            src="{{product.featured_image | image_url}}"
-            alt="Product image"
-            width="587"
-            height="691"
-            class="product__gallery-img"
-          >
-        </div>
-
         {% render 'images-swiper', content: product %}
       </div>
 
@@ -33,25 +25,22 @@
         {% render 'breadcrumbs' %}
 
         <div class="product__info-block">
-          <h1 class="product__title">{{ product.title }}</h1>
+          <h1 class="product__title js-product-title">{{ product.selected_or_first_available_variant.title }}</h1>
           <span class="product__vendor">{{ product.vendor }}</span>
         </div>
 
-        <div class="product__info-block product__price-wrapper js-product-price">
-          <span class="product__price">{{ product.selected_or_first_available_variant.price | money }}</span>
-          {% assign selectedOrFirstAvailable = product.selected_or_first_available_variant %}
+        <div class="product__info-block product__price-wrapper">
+          <span class="product__price js-product-price">
+            {{- product.selected_or_first_available_variant.price | money -}}
+          </span>
 
-          {% if selectedOrFirstAvailable.price < selectedOrFirstAvailable.compare_at_price %}
-            <span class="product__compare-at-price">
-              {{- product.selected_or_first_available_variant.compare_at_price | money -}}
-            </span>
-          {% endif %}
+          <span class="product__compare-at-price {% if price > compareAtPrice or price == compareAtPrice %} hidden {% endif %} js-product-compare-at-price">
+            {{- product.selected_or_first_available_variant.compare_at_price | money -}}
+          </span>
 
-          {% if product.selected_or_first_available_variant.available == false %}
-            <div class="js-out-of-stock product__out-of-stock">
-              <span>Out of stock</span>
-            </div>
-          {% endif %}
+          <div class="js-out-of-stock product__out-of-stock {% if product.selected_or_first_available_variant.available %} hidden {% endif %}">
+            <span>Out of stock</span>
+          </div>
         </div>
 
         {% for options_with_values in product.options_with_values %}
@@ -73,7 +62,7 @@
                       {% endif %}
                     >
                   {% else %}
-                    <div class="product__option">
+                    <label class="product__option" for="{{value}}">
                       <input
                         type="radio"
                         id="{{value}}"
@@ -83,8 +72,8 @@
                           checked
                         {% endif %}
                       >
-                      <label for="{{value}}">{{ value }}</label>
-                    </div>
+                      {{ value }}
+                    </label>
                   {% endif %}
                 {% endfor %}
               </div>
@@ -92,12 +81,12 @@
           {% endif %}
         {% endfor %}
 
-        <div class="js-submit-container">
+        <div class="js-submit-container product__submit-area-wrapper">
           <div class="product__add-to-cart-wrapper js-add-to-cart-wrapper">
-            <div class="product__quantity-selector js-product-quantity">
-              <button id="decrease">-</button>
+            <div class="product__quantity-selector js-product-quantity-wrapper {% if product.selected_or_first_available_variant.available == false %}hidden{%endif%}">
+              <button id="decrease" class="js-decrease-btn">-</button>
               <span class="js-quantity">1</span>
-              <button id="increase">+</button>
+              <button id="increase" class="js-increase-btn">+</button>
             </div>
 
             <button
@@ -116,6 +105,7 @@
             </button>
           </div>
 
+          {%- render 'loader' -%}
           <div class="js-error-message product__error-message"></div>
         </div>
       </div>
@@ -129,7 +119,7 @@
         </div>
       </div>
 
-      <div id="description" class="js-tab-description product__tab-description product__tab-description_active">
+      <div id="description" class="js-tab-description product__tab-description product__tab-description--active">
         <h3 class="product__description-title">Product Description</h3>
         {% if product.metafields.custom.size > 0 %}
           {% for product_metafield in product.metafields.custom %}

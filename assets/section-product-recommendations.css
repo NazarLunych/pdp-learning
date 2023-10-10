@@ -7,6 +7,11 @@
   color: currentColor;
 }
 
+.recommendations__card:hover {
+  border-color: var(--dark-midnight-blue-color);
+  transition: var(--transition-duration);
+}
+
 .recommendations__card-img {
   border-radius: 12px 12px 0px 0px;
   background: #f7f5f7;
